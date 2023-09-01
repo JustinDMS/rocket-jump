@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cjshyjrdqi1k0"]
+
+[ext_resource type="Script" path="res://Mechanics/Dash Component/direction_indicator.gd" id="1_lkmup"]
+[ext_resource type="Script" path="res://Mechanics/Dash Component/dash_component.gd" id="1_tgy2w"]
+
+[sub_resource type="Curve" id="Curve_bl5g2"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_85mmx"]
+colors = PackedColorArray(0, 1, 0, 1, 1, 0, 0, 1)
+
+[node name="DashComponent" type="Node2D" node_paths=PackedStringArray("direction_indicator")]
+script = ExtResource("1_tgy2w")
+direction_indicator = NodePath("DirectionIndicator")
+
+[node name="DirectionIndicator" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0, 0, 0)
+width_curve = SubResource("Curve_bl5g2")
+default_color = Color(1, 0, 0, 1)
+gradient = SubResource("Gradient_85mmx")
+joint_mode = 2
+end_cap_mode = 2
+script = ExtResource("1_lkmup")

@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://cwttv3d01vys2"]
+
+[ext_resource type="Script" path="res://Player/player.gd" id="1_bg0wj"]
+[ext_resource type="PackedScene" uid="uid://cjshyjrdqi1k0" path="res://Mechanics/Dash Component/dash_component.tscn" id="2_8ygoa"]
+[ext_resource type="Script" path="res://Player/state_machine.gd" id="2_17ks3"]
+[ext_resource type="Script" path="res://Player/States/idle.gd" id="3_35adc"]
+[ext_resource type="Script" path="res://Player/States/ground.gd" id="5_g1jeb"]
+[ext_resource type="Script" path="res://Player/States/jump.gd" id="5_mq5na"]
+[ext_resource type="Script" path="res://Player/States/air.gd" id="7_y4yu0"]
+[ext_resource type="PackedScene" uid="uid://dbiigtirg732m" path="res://Effects/explosion.tscn" id="8_s6upw"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cc6e4"]
+radius = 20.0
+height = 80.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q7ofb"]
+radius = 20.0
+height = 80.0
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_machine")]
+collision_layer = 2
+script = ExtResource("1_bg0wj")
+state_machine = NodePath("StateMachine")
+blast = ExtResource("8_s6upw")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+mesh = SubResource("CapsuleMesh_cc6e4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_q7ofb")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_q7ofb")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(1, 0, 0, 1)
+
+[node name="Dash Component" parent="." instance=ExtResource("2_8ygoa")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player", "states", "starting_state")]
+script = ExtResource("2_17ks3")
+player = NodePath("..")
+states = [NodePath("Idle"), NodePath("Ground"), NodePath("Jump"), NodePath("Air")]
+starting_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ground_state", "jump_state", "air_state")]
+script = ExtResource("3_35adc")
+ground_state = NodePath("../Ground")
+jump_state = NodePath("../Jump")
+air_state = NodePath("../Air")
+
+[node name="Ground" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "jump_state", "air_state")]
+script = ExtResource("5_g1jeb")
+idle_state = NodePath("../Idle")
+jump_state = NodePath("../Jump")
+air_state = NodePath("../Air")
+
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("air_state")]
+script = ExtResource("5_mq5na")
+air_state = NodePath("../Air")
+
+[node name="Air" type="Node" parent="StateMachine" node_paths=PackedStringArray("ground_state")]
+script = ExtResource("7_y4yu0")
+ground_state = NodePath("../Ground")
+
+[connection signal="dashed" from="Dash Component" to="." method="dash"]
