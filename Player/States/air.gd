@@ -1,5 +1,7 @@
 extends State
 
+signal landed
+
 @export var ground_state : State
 
 
@@ -23,14 +25,10 @@ func statePhysicsProcess(_delta) -> State:
 	applyGravity(_delta)
 	var input : float = getInputDirection()
 	if input:
-		# Rising
-		if player.velocity.y < 0:
-			player.velocity.x = lerpf(player.velocity.x, input * player.move_speed, 0.1)
-		# Falling
-		if player.velocity.y > 0:
-			player.velocity.x = lerpf(player.velocity.x, ease(player.velocity.x, 3), 0.005)
+		player.velocity.x = lerpf(player.velocity.x, input * player.move_speed, 0.1)
 	
 	if player.is_on_floor():
+		emit_signal("landed")
 		return ground_state
 	
 	return null
