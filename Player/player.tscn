@@ -66,3 +66,4 @@ script = ExtResource("7_y4yu0")
 ground_state = NodePath("../Ground")
 
 [connection signal="dashed" from="Dash Component" to="." method="dash"]
+[connection signal="landed" from="StateMachine/Air" to="Dash Component" method="landed"]
