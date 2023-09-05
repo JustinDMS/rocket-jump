@@ -23,7 +23,12 @@ func statePhysicsProcess(_delta) -> State:
 	applyGravity(_delta)
 	var input : float = getInputDirection()
 	if input:
-		player.velocity.x = lerpf(player.velocity.x, ease(player.velocity.x, 3), 0.005)
+		# Rising
+		if player.velocity.y < 0:
+			player.velocity.x = lerpf(player.velocity.x, input * player.move_speed, 0.1)
+		# Falling
+		if player.velocity.y > 0:
+			player.velocity.x = lerpf(player.velocity.x, ease(player.velocity.x, 3), 0.005)
 	
 	if player.is_on_floor():
 		return ground_state

@@ -1,13 +1,13 @@
 extends Node2D
 
-signal dashed(speed : float, direction : Vector2)
+signal dashed(speed : float, direction : Vector2, charge : float)
 
 @export var direction_indicator : Node2D
 
 @export_category("Config")
-@export var dash_speed : float = 500.0
-@export var charge_speed : float = 10.0
-@export var max_charge : float = 500.0
+@export var dash_speed : float = 400.0
+@export var charge_speed : float = 15.0
+@export var max_charge : float = 750.0
 @export var max_indicator_length : float = 100.0
 
 var current_charge : float = 0.0
@@ -32,11 +32,12 @@ func dash() -> void:
 	direction = direction.normalized()
 	
 	if direction:
-		emit_signal("dashed", dash_speed + current_charge, direction)
+		emit_signal("dashed", dash_speed + current_charge, direction, current_charge / max_charge)
 	
 	# Reset charge
 	current_charge = 0
 	direction_indicator.updateChargeDisplay(current_charge, max_charge, last_clicked_pos)
+
 
 func charge() -> void:
 	# Linear charge speed for now

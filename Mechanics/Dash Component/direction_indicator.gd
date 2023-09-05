@@ -1,7 +1,7 @@
 extends Line2D
 
 @export_category("Config")
-@export var max_indicator_length : float = 100.0
+@export var max_indicator_length : float = 125.0
 
 
 func updateChargeDisplay(current_charge : float, max_charge : float, last_clicked_pos : Vector2) -> void:
@@ -20,8 +20,15 @@ func updateChargeDisplay(current_charge : float, max_charge : float, last_clicke
 	var ratio : float = (current_charge / max_charge) * max_indicator_length
 	set_point_position(2, direction * ratio)
 	
-	setColor(current_charge / max_charge)
+	setColor(current_charge, max_charge)
 
 
-func setColor(normalized_weight : float) -> void:
-	gradient.colors = [Color.GREEN, Color.GREEN.lerp(Color.RED, normalized_weight)]
+func setColor(current_charge : float, max_charge : float) -> void:
+	#print(gradient.colors[1])
+	#print(current_charge / max_charge)
+	var progress : float = current_charge / max_charge
+	if progress == 1:
+		print("Done")
+		gradient.colors = [Color.GREEN.lerp(Color.RED, 0.15), Color.RED]
+		return
+	gradient.colors = [Color.GREEN, Color.GREEN.lerp(Color.RED, progress)]

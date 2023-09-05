@@ -5,9 +5,9 @@ extends CharacterBody2D
 
 @export_category("Moving")
 @export var move_speed : float = 400.0
-@export var max_speed_x : float = 1250.0
-@export var max_speed_y : float = 2500.0
-@export var jump_height : float = 100.0
+@export var max_speed_x : float = 1750.0
+@export var max_speed_y : float = 1500.0
+@export var jump_height : float = 150.0
 @export var jump_time_to_peak : float = 0.5
 @export var jump_time_to_descent : float = 0.4
 
@@ -17,7 +17,6 @@ extends CharacterBody2D
 @onready var jump_velocity : float = -((2.0 * jump_height) / jump_time_to_peak)
 @onready var jump_gravity : float = -((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak))
 @onready var fall_gravity : float = -((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent))
-@onready var line_2d = $Line2D
 
 
 func _ready():
@@ -36,19 +35,21 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func dash(speed, direction):
+func dash(speed, direction, _charge):
 	
-	# Check if dashing in opposite direction
-	if sign(velocity.x) != sign(direction.x):
-		velocity.x = 0
+	var dash_vector : Vector2 = direction * speed
 	
-	# Check if player is 
-	if direction.y < 0:
+	if direction.dot(velocity) < 0:
+		velocity.x *= 0.75
+	
+	# If dashing in opposite y direction and falling
+	if direction.y < 0 and velocity.y > 0:
 		velocity.y = 0
 	
-	velocity += direction * speed
+	velocity += dash_vector
 	velocity.x = clampf(velocity.x, -max_speed_x, max_speed_x)
 	velocity.y = clampf(velocity.y, -max_speed_y, max_speed_y)
+	
 	emitBlastParticle(direction)
 
 

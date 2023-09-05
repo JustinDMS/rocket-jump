@@ -34,7 +34,7 @@ func statePhysicsProcess(_delta) -> State:
 	
 	# If not moving
 	if player.is_on_floor():
-		if player.velocity.length() < 21:
+		if player.velocity.x == 0:
 			return idle_state
 	else:
 		return air_state

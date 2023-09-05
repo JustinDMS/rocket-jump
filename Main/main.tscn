@@ -1,11 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://djte2678inil"]
+[gd_scene load_steps=5 format=3 uid="uid://djte2678inil"]
 
+[ext_resource type="Script" path="res://Main/main.gd" id="1_2ubgk"]
 [ext_resource type="PackedScene" uid="uid://b75fanxu6u2j" path="res://Map/map.tscn" id="1_u6jqr"]
+[ext_resource type="PackedScene" uid="uid://duiippq104dc8" path="res://Mechanics/Collectable/collectable.tscn" id="3_d6oje"]
 [ext_resource type="PackedScene" uid="uid://cwttv3d01vys2" path="res://Player/player.tscn" id="4_ebhv2"]
 
 [node name="Main" type="Node"]
+script = ExtResource("1_2ubgk")
 
 [node name="Map" parent="." instance=ExtResource("1_u6jqr")]
 
 [node name="Player" parent="." instance=ExtResource("4_ebhv2")]
-position = Vector2(0, -40)
+position = Vector2(-3842, -40)
+
+[node name="Collectable" parent="." instance=ExtResource("3_d6oje")]
+z_index = 1
+position = Vector2(-2486, -748)
+
+[connection signal="collected" from="Collectable" to="." method="_on_collectable_collected"]

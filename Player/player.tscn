@@ -35,10 +35,6 @@ collision_layer = 2
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_q7ofb")
 
-[node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(0, 0, 0, 0)
-default_color = Color(1, 0, 0, 1)
-
 [node name="Dash Component" parent="." instance=ExtResource("2_8ygoa")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
