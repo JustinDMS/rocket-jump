@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://djte2678inil"]
+[gd_scene load_steps=6 format=3 uid="uid://djte2678inil"]
 
 [ext_resource type="Script" path="res://Main/main.gd" id="1_2ubgk"]
 [ext_resource type="PackedScene" uid="uid://b75fanxu6u2j" path="res://Map/map.tscn" id="1_u6jqr"]
 [ext_resource type="PackedScene" uid="uid://duiippq104dc8" path="res://Mechanics/Collectable/collectable.tscn" id="3_d6oje"]
 [ext_resource type="PackedScene" uid="uid://cwttv3d01vys2" path="res://Player/player.tscn" id="4_ebhv2"]
+[ext_resource type="PackedScene" uid="uid://mgi2ekkgo3gi" path="res://Mechanics/KillZone/kill_zone.tscn" id="5_pre3t"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2ubgk")
@@ -17,4 +18,17 @@ position = Vector2(-3842, -40)
 z_index = 1
 position = Vector2(-2486, -748)
 
+[node name="Collectable2" parent="." instance=ExtResource("3_d6oje")]
+z_index = 1
+position = Vector2(1994, -708)
+
+[node name="Collectable3" parent="." instance=ExtResource("3_d6oje")]
+z_index = 1
+position = Vector2(5193, -1472)
+
+[node name="KillZone" parent="." instance=ExtResource("5_pre3t")]
+position = Vector2(1419, 1655)
+
 [connection signal="collected" from="Collectable" to="." method="_on_collectable_collected"]
+[connection signal="collected" from="Collectable2" to="." method="_on_collectable_collected"]
+[connection signal="collected" from="Collectable3" to="." method="_on_collectable_collected"]
